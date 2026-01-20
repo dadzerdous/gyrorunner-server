@@ -18,10 +18,11 @@ wss.on("connection", (ws) => {
   ws.on("message", (data) => {
     const msg = JSON.parse(data);
 
-    if (msg.type === "move") {
-      players[id].x += msg.x;
-      players[id].y += msg.y;
-    }
+if (msg.type === "move") {
+  players[id].x = msg.x;
+  players[id].y = msg.y;
+}
+
   });
 
   ws.on("close", () => {
