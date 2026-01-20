@@ -10,6 +10,11 @@ wss.on("connection", (ws) => {
 
   players[id] = { x: 0, y: 0, hp: 10 };
 
+  ws.send(JSON.stringify({
+    type: "welcome",
+    id
+  }));
+
   ws.on("message", (data) => {
     const msg = JSON.parse(data);
 
