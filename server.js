@@ -7,7 +7,6 @@ const players = {};
 let enemies = [];
 const arenaSize = 450;
 
-// Enemy Logic Helper
 function spawnWave() {
   enemies = [];
   for (let i = 0; i < 10; i++) {
@@ -30,16 +29,29 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (data) => {
     const msg = JSON.parse(data);
+    
+    // Update player position
     if (msg.type === "move" && players[id]) {
       players[id].x = msg.x;
       players[id].y = msg.y;
     }
+
+    // Handle enemy damage from a client-side hit detection
+    if (msg.type === "hit") {
+      const target = enemies.find(en => en.id === msg.enemyId);
+      if (target) {
+        target.hp -= msg.damage;
+        // Remove dead enemies
+        if (target.hp <= 0) {
+          enemies = enemies.filter(en => en.id !== msg.enemyId);
+        }
+      }
+    }
   });
 
-  ws.on("close", () => { delete players[id]; });
+  ws.on("close", () => { delete players[id]; }); //
 });
 
-// Server Game Loop (20 FPS)
 setInterval(() => {
   if (enemies.length === 0) spawnWave();
 
