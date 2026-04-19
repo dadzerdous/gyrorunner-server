@@ -23,9 +23,12 @@ function spawnWave(n) {
       id: Math.random().toString(36).slice(2),
       x: (Math.random() * 2 - 1) * (arenaSize - 50),
       y: (Math.random() * 2 - 1) * (arenaSize - 50),
-      type: i % 4 === 0 ? 'archer' : 'goblin',
+type: i % 4 === 0 ? 'skeleton' : 'goblin',
       hp: i % 4 === 0 ? 2 + (n * 0.5) : 5 + (n * 1),
-      speed: i % 4 === 0 ? 2.5 : 1.8
+      speed: i % 4 === 0 ? 2.5 : 1.8,
+      maxHp: i % 4 === 0 ? 2 + (n * 0.5) : 5 + (n * 1),
+      emoji: i % 4 === 0 ? '💀' : '👺',
+      radius: 15
     });
   }
   broadcastState();
