@@ -45,7 +45,7 @@ function broadcastState() {
 
 wss.on("connection", (ws) => {
   const id = Math.random().toString(36).slice(2);
-  players[id] = { x: 0, y: 0, hp: 10, ready: false };
+  players[id] = { x: 0, y: 0, hp: 10, ready: false, avatar: '❓', className: '', heroName: '' };
 
   console.log(`[Server] Player ${id} connected`);
   ws.send(JSON.stringify({ type: "welcome", id }));
@@ -67,6 +67,12 @@ wss.on("connection", (ws) => {
     if (msg.type === "move" && players[id]) {
       players[id].x = msg.x;
       players[id].y = msg.y;
+    }
+
+    if (msg.type === "profile" && players[id]) {
+      players[id].avatar    = msg.avatar    || '🧙';
+      players[id].className = msg.className || 'HERO';
+      players[id].heroName  = msg.heroName  || 'HERO';
     }
 
     if (msg.type === "hit") {
